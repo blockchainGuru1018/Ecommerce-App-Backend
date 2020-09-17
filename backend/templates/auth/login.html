@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin{%  endblock %}
+
+{% load static %}
+
+{% block styles %}
+    <script src="https://apis.google.com/js/client:platform.js?onload=startApp"></script>
+    <style>
+        .abcRioButtonLightBlue {
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div id="containerbar" class="containerbar authenticate-bg">
+    <div class="container">
+        <div class="auth-box login-box">`
+            <div class="row no-gutters align-items-center justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="auth-box-right">
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="form-head">
+                                        <a href="" class="logo"><img src="/static/images/logo.png" class="img-fluid" alt="logo"></a>
+                                    </div>
+                                    <h4 class="text-primary my-4">ADMINISTRATOR</h4>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-danger">{{ message }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="username" placeholder="Email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                    </div>
+                                  <button type="submit" class="btn btn-success btn-lg btn-block font-18">Log in</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/login.js' %}"></script>
+{% endblock %}

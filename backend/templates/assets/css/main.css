@@ -1,0 +1,79 @@
+@media (min-width: 992px) {
+    .contentbar {
+        margin: 120px 30px 0 30px;
+    }
+}
+@media (max-width: 992px) {
+    .contentbar {
+        margin: 50px 30px 0 30px;
+    }
+    .link_logout {
+        padding: 25px 0px 0px 50px;
+        float: left;
+    }
+}
+@media (max-width: 767px) {
+    .topbar {
+        display: block !important;
+    }
+
+}
+
+#main_menu li {
+    padding-left: 50px;
+}
+#main_menu li a {
+    color: #263a5b;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+}
+#main_menu li a img {
+    display: inline-block;
+    width: 18px;
+    vertical-align: middle;
+    margin-right: 7px;
+    filter: invert(0.6) sepia(1) saturate(1) hue-rotate(185deg);
+}
+
+#main_menu li.active a, #main_menu li a:hover, #main_menu li a:focus {
+    color: #0080ff;
+    background-color: transparent;
+}
+
+#main_menu li.active a img, #main_menu li a:hover img, #main_menu li a:focus img,
+.link_logout img, .link_logout:hover img, .link_logout:focus img {
+    filter: invert(0.7) sepia(1) saturate(14) hue-rotate(195deg);
+}
+
+.link_logout {
+    color: #263a5b;
+}
+.link_logout img {
+    width: 20px;
+    margin-top: -3px;
+    margin-right: 10px;
+    filter: invert(0.6) sepia(1) saturate(1) hue-rotate(185deg);
+}
+.tab-content {
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 20px;
+}
+
+.datepickers-container {
+    z-index: 10000;
+}
+.modal-dialog {
+    max-width: 1000px;
+    margin: 1.75rem auto;
+}
+.modal-dialog .modal-body .contentbar {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0px;
+}
+.modal-dialog .modal-body .container-fluid {
+    width: 100%;
+}

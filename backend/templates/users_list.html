@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% load static %}
+{% block title %}Users_List{%  endblock %}
+{% block styles %}
+    <link href="{% static 'plugins/switchery/switchery.min.css' %}" rel="stylesheet">
+    <link href="{% static 'plugins/datepicker/datepicker.min.css'  %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block body %}
+<div id="containerbar" class="container-fluid">
+    <div class="rightbar">
+        {% include 'includes/topbar.html' %}
+        <div class="contentbar ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-30">
+                        <div class="card-header">
+                            <div class="row justify-content-end">
+{#                                <div class="col-md-12 col-lg-2"><span>User List</span></div>#}
+                                <div class="col-12 col-md-6 col-lg-2">
+                                    <button id="btn_new_booking" type="button" class="btn btn-primary col-12"><i class="feather icon-send mr-2"></i> Create a User</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form method="get">
+                                {% csrf_token %}
+                                <div class="table-responsive">
+                                    <table id="tbl_order_list" class="table table-hover">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">User_ID</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Created_At</th>
+                                        <th scope="col">Last_Login</th>
+                                        <th scope="col">Active</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <th scope="row">#{{ user.id }}</th>
+                                        <td>{{ user.email }}</td>
+                                        <td><font color="{% if user.username == None %}red{% endif %}">{{ user.username }}</font></td>
+                                      <td><font color="{% if user.phone == None %}red{% endif %}">{{ user.phone }}</font></td>
+                                        <td><font color="{% if user.address == None %}red{% endif %}">{{ user.address }}</font></td>
+                                        <td><time >{{ user.date_joined }}</time></td>
+                                        <td><time >{{ user.last_login }}</time></td>
+                                        <td><font color="{% if user.is_active %}blue{% else %}red{% endif %}">{{ user.is_active }}</font></td>
+                                        <td>
+                                            <div class="button-list">
+                                                <a data-id={{ user.id }} methods="" class="link_detail btn btn-primary-rgba"><i class="feather icon-file"></i></a>
+                                                <a data-id={{ user.id }} methods="" class="link_edit btn btn-success-rgba"><i class="feather icon-edit-2"></i></a>
+                                                <a data-id={{ user.id }} methods="" class="link_delete btn btn-danger-rgba"><i class="feather icon-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footerbar">
+            <footer class="footer">
+                <p class="mb-0">© 2020 Unboxxen - All Rights Reserved.</p>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="request_order_dialog" tabindex="-1" role="dialog" aria-labelledby="dialogTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered bd-example-modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dialogTitle">New Booking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="booking_form" action="user-add/" method="POST">
+                    {% csrf_token %}
+                    <div class="contentbar container-fluid ">
+                    <!-- Start row -->
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-12 col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-12 col-xl-12">
+
+                                            <ul class="nav nav-tabs" id="defaultTab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="option1-tab" data-toggle="tab" href="#tab_option1" role="tab" aria-controls="tab_option1" aria-selected="true">Property</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="option3-tab" data-toggle="tab" href="#tab_option3" role="tab" aria-controls="tab_option3" aria-selected="false">Date</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="defaultTabContent">
+                                                <div class="tab-pane fade show active" id="tab_option1" role="tabpanel" aria-labelledby="option1-tab">
+                                                    <div class="form-row mb-3">
+                                                        <div class="col-sm-6">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="custom-control custom-checkbox text-left m-b-10">
+                                                                      <input type="text" class="form-control" name="email" id="txt_email" placeholder="Email" required>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox text-left m-b-10">
+                                                                      <input type="text" class="form-control" name="username" id="txt_username" placeholder="Username" required>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox text-left m-b-10">
+                                                                      <input type="text" class="form-control" name="name" id="txt_name" placeholder="Name" required>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox text-left m-b-20">
+                                                                      <input type="text" class="form-control" name="address" id="txt_address" placeholder="Address">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="tab_option3" role="tabpanel" aria-labelledby="option3-tab">
+                                                    <div class="form-row mb-3">
+                                                        <div class="col-sm-6">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-12 card m-b-30">
+                                                                            <div class="input-group">
+                                                                                <input type="text" id="txt_last_login" name="last" class="form-control" aria-describedby="basic-addon5" placeholder="DD/MM/YYYY">
+                                                                            </div>
+                                                                            <label class="col-6 font-14" >: last_login</label>
+                                                                        </div>
+                                                                        <div class="col-12 card m-b-30">
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control" name="create" id="txt_created_at" placeholder="DD/MM/YYYY">
+                                                                            </div>
+                                                                            <label class="col-6 font-14" >: created_at</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="row">
+                                            <div class="col-12">
+                                                <div class="card m-b-30">
+                                                    <ul class="nav nav-tabs mb-3" id="yourContactTab" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#tab-contact" role="tab" aria-controls="tab-contact" aria-selected="true">  </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tab-content" id="yourContactTabContent">
+                                                        <div class="tab-pane fade show active" id="tab-contact" role="tabpanel" aria-labelledby="contact-tab">
+                                                            <div class="row m-b-30 justify-content-center">
+                                                                <div class="col-12">
+                                                                    <div class="form-group mb-0">
+                                                                        <input type="hidden" class="form-control" name="book_id" id="book_id">
+                                                                        <select class="form-control" id="txt_active" name ="active" >
+                                                                            <option value="True">True</option>
+                                                                            <option value="False">False</option>
+                                                                        </select>
+{#                                                                        <input type="text" class="form-control" name="active" id="txt_active" placeholder="Active">#}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-b-30 justify-content-center">
+                                                                <div class="col-12">
+                                                                    <div class="form-group mb-0">
+                                                                        <input type="text" class="form-control" name="over" id="txt_overview" placeholder="Overview">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-b-30 justify-content-center">
+                                                                <div class="col-12">
+                                                                    <div class="form-group mb-0">
+                                                                        <input type="number" class="form-control" name="mobile" id="txt_mobile" placeholder="Mobile">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row justify-content-center">
+                                                                <div class="col-12">
+                                                                    <button type="submit" class="btn btn-primary col-12"><i class="feather icon-send mr-2"></i><span>Create User Request</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{% static 'plugins/datepicker/datepicker.min.js' %}"></script>
+    <script src="{% static 'plugins/datepicker/i18n/datepicker.en.js' %}"></script>
+    <script src="{% static 'js/custom/custom-form-datepicker.js' %}"></script>
+    <script src="https://rawgit.com/makeusabrew/bootbox/f3a04a57877cab071738de558581fbc91812dce9/bootbox.js"></script>
+    <script src="{% static 'js/booking.js' %}"></script>
+{% endblock %}
